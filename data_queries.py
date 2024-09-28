@@ -1,16 +1,8 @@
+# Script for simple data discovery queries written at the bottom of 'sql_queries.py'.
 import configparser
 import psycopg2
 import logging
 from sql_queries import data_queries_list
-
-# Idea for this script: load queries (defined in sql_queries.py?) and execute in list form?
-
-# Function, a) reads config file parameters, establishes connection with cluster, creates a cursor to execute queries, then executes...Both fxns have "cur" and "conn" as arguments.
-
-# IDEA: WRITE PRINTING OF QUERY RESULTS INTO A FUNCTION TO BE IMPORTED;
-# Capture queries in a list as with create, insert and copy functions, so you don't need to run them one at a time?
-# Something like for query in list of queries > execute queries, capture results (own fxn?), print fxn: those would be the lines in the main function.
-
 
 def data_discovery(cur, conn):
     for query in data_queries_list:
