@@ -3,9 +3,7 @@ import psycopg2
 import logging
 from sql_queries import copy_table_queries, insert_table_queries
 
-logging.basicConfig(level=logging.INFO)
-
-# Function to copy data from buckets into 'events' and 'songs' staging tables; LIST: "copy_table_queries" list from sql_queries.py
+# Function to copy data from buckets into 'events' and 'songs' staging tables; LIST: "copy_table_queries" from sql_queries.py
 
 def load_staging_tables(cur, conn):
 
