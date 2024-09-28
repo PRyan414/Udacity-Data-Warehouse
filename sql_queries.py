@@ -1,3 +1,4 @@
+# Code called in etl.py and data_queries.py; drop, create, copy and insert data into tables; finally, data discovery queries.
 import configparser
 
 # CONFIG
@@ -227,17 +228,6 @@ table_count = (
       (SELECT COUNT(*) FROM artists),
       (SELECT COUNT(*) FROM time);
     """)
-
-# RE-FIGURE THIS LOGIC; SEE RUBRIC
-# user_time_count = (
-#     """
-#     SELECT start_time, COUNT(start_time) AS Popular_Time
-#     FROM time
-#     GROUP BY start_time
-#     ORDER BY Popular_Time DESC
-#     LIMIT 10;
-#     """
-# )
 
 # DATA QUERIES list
 data_queries_list = [count_query, table_count]
