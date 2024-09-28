@@ -10,20 +10,15 @@ config.read('dwh.cfg')
 
 KEY = config.get("AWS", "KEY")
 SECRET = config.get("AWS", "SECRET")
-# REGION = config.get("S3", "REGION")
-# role_name = config.get("DWH", "DWH_IAM_ROLE_NAME")
-# role_arn = config.get("IAM_ROLE", "ARN")
 DWH_CLUSTER_IDENTIFIER = config.get("DWH", "DWH_CLUSTER_IDENTIFIER")
 DWH_CLUSTER_TYPE = config.get("DWH", "DWH_CLUSTER_TYPE")
 DWH_NUM_NODES = config.get("DWH", "DWH_NUM_NODES")
 DWH_NODE_TYPE = config.get("DWH", "DWH_NODE_TYPE")
-# DWH_IAM_ROLE_NAME = config.get("DWH", "DWH_IAM_ROLE_NAME")
 CLUSTER_DB_NAME = config.get("CLUSTER", "dbname")
 CLUSTER_DB_USER = config.get("CLUSTER", "user")
 CLUSTER_DB_PASSWORD = config.get("CLUSTER", "password")
-# CLUSTER_DB_PORT = config.get("CLUSTER", "port")
-# CLUSTER_DB_ENDPOINT = config.get("CLUSTER", "host")
 
+# Create IAM and Redshift clients.
 iam = boto3.client('iam', aws_access_key_id=KEY, aws_secret_access_key=SECRET, region_name='us-west-2')
 redshift = boto3.client('redshift', aws_access_key_id=KEY, aws_secret_access_key=SECRET, region_name='us-west-2')
 
@@ -75,9 +70,6 @@ def create_iam_role(role_name, policy_arn):
         print(f"Policy {policy_arn} attached to role {role_name}.")
     except Exception as e:
         print(f"Error attaching policy: {e}")
-
-# Usage
-# create_iam_role(role_name, 'arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess')
 
 # Function to create Redshift cluster
 def create_redshift_cluster(role_arn):
