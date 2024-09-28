@@ -13,3 +13,9 @@ The ETL pipeline is comprised of the following python files, each created for a 
 
 ## Star Schema
 The star schema is organized by 'songplays', the primary fact table and data of interest and then connected to dimensional tables focused on users, songs, artists and time pertaininig to Sparkify users.  Tables can be easily joined and queried as needed based on specific types of enquiries.
+
+## Running the Code:
+1. Open a terminal in the directory containing all necessary files.
+2. Run 'create_tables.py'.
+3. Once the message 'cluster is available' is shown, next run 'etl.py'.
+4. When tables are created and populated with data, finally run 'data_queries.py' for a brief demonstration of the type of data that can be extracted using queries.
