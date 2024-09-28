@@ -1,4 +1,4 @@
-# running "iac_v2.py" code correctly.  In that file, add function to create, wait and connect to RS cluster
+# Code to create IAM role if necessaryy, connect to a Redshift cluster, and then drop if existing and create tables for the database.
 import configparser
 import psycopg2
 import boto3
@@ -26,6 +26,7 @@ CLUSTER_DB_PASSWORD = config.get("CLUSTER", "password")
 CLUSTER_DB_PORT = config.get("CLUSTER", "port")
 CLUSTER_DB_ENDPOINT = config.get("CLUSTER", "host")
 
+# Create IAM client and Redshift cluster using boto.
 iam = boto3.client('iam', aws_access_key_id=KEY, aws_secret_access_key=SECRET, region_name='us-west-2')
 redshift = boto3.client('redshift', aws_access_key_id=KEY, aws_secret_access_key=SECRET, region_name='us-west-2')
 
@@ -43,7 +44,6 @@ def main():
     config = configparser.ConfigParser()
     config.read('dwh.cfg')
 
-    # role_name = config.get("DWH", "DWH_IAM_ROLE_NAME")
     role_name = DWH_IAM_ROLE_NAME
 
     role_exists = check_iam_role_exists(role_name)
