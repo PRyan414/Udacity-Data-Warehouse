@@ -1,9 +1,11 @@
-# Script for simple data discovery queries written at the bottom of 'sql_queries.py'.
+# Code to import and run 'data discovery' queries shown in sql_queries.py
+
 import configparser
 import psycopg2
 import logging
 from sql_queries import data_queries_list
 
+# Function that runs queries imported in 'data_queries_list'; output prints the query and the result.
 def data_discovery(cur, conn):
     for query in data_queries_list:
         cur.execute(query)
@@ -14,6 +16,7 @@ def data_discovery(cur, conn):
         print("\n")
         conn.commit()
 
+# Main function connects to the cluster, creates a cursor and runs the function.
 def main():
     config = configparser.ConfigParser()
     config.read('dwh.cfg')
@@ -30,6 +33,7 @@ def main():
     conn = psycopg2.connect(conn_string)
     cur = conn.cursor()
 
+    # run function defined above.
     try:
         data_discovery(cur, conn)
     except Exception as e:

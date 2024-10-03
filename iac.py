@@ -18,7 +18,7 @@ CLUSTER_DB_NAME = config.get("CLUSTER", "dbname")
 CLUSTER_DB_USER = config.get("CLUSTER", "user")
 CLUSTER_DB_PASSWORD = config.get("CLUSTER", "password")
 
-# Create IAM and Redshift clients.
+#Create clients using boto for IAM role and Redshift access.
 iam = boto3.client('iam', aws_access_key_id=KEY, aws_secret_access_key=SECRET, region_name='us-west-2')
 redshift = boto3.client('redshift', aws_access_key_id=KEY, aws_secret_access_key=SECRET, region_name='us-west-2')
 
@@ -70,6 +70,9 @@ def create_iam_role(role_name, policy_arn):
         print(f"Policy {policy_arn} attached to role {role_name}.")
     except Exception as e:
         print(f"Error attaching policy: {e}")
+
+# Usage
+# create_iam_role(role_name, 'arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess')
 
 # Function to create Redshift cluster
 def create_redshift_cluster(role_arn):

@@ -1,18 +1,17 @@
-# Code called in etl.py and data_queries.py; drop, create, copy and insert data into tables; finally, data discovery queries.
 import configparser
 
 # CONFIG
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
 
+# Config file inforomation needed for queries.
 LOG_DATA = config.get("S3", "LOG_DATA")
 SONG_DATA = config.get("S3", "SONG_DATA")
 ARN = config.get("IAM_ROLE", "ARN")
 LOG_JSONPATH = config.get("S3", "LOG_JSONPATH")
 REGION = config.get("S3", "REGION")
-SONG_JSON = config.get("S3", "SONG_JSON")
 
-# DROP TABLES
+# DROP TABLES - code for dropping tables if they are found to exist in the database.
 staging_events_table_drop = "DROP TABLE IF EXISTS staging_events"
 staging_songs_table_drop = "DROP TABLE IF EXISTS staging_songs"
 songplay_table_drop = "DROP TABLE IF EXISTS songplays"
@@ -21,7 +20,7 @@ song_table_drop = "DROP TABLE IF EXISTS songs"
 artist_table_drop = "DROP TABLE IF EXISTS artists"
 time_table_drop = "DROP TABLE IF EXISTS time"
 
-# CREATE TABLES - ALL (staging and star schema)
+# CREATE TABLES - Code to create ALL (staging and star schema) tables.
 
 staging_events_table_create = (
     """
@@ -114,7 +113,8 @@ time_table_create = (
         weekday INTEGER
         );""")
 
-# STAGING TABLES - COPY QUERIES (COPY DATA FROM BUCKETS INTO TABLES)
+
+# STAGING TABLES - COPY QUERIES (COPY DATA FROM S3 BUCKETS INTO STAGING TABLES)
 
 staging_events_copy = ("""
     COPY staging_events
@@ -130,10 +130,10 @@ staging_songs_copy = ("""
     IAM_ROLE '{}'
     FORMAT AS JSON '{}'
     REGION '{}'
-""").format(SONG_DATA, ARN, SONG_JSON, REGION)
+""").format(SONG_DATA, ARN, 'auto', REGION)
 
 
-# FINAL TABLES - INSERT DATA INTO STAR SCHEMA FACT AND DIM TABLES FROM STAGING TABLES
+# FINAL TABLES - INSERT DATA INTO STAR SCHEMA FACT AND DIMENSION TABLES FROM STAGING TABLES
 
 songplay_table_insert = (
     """
@@ -203,10 +203,7 @@ copy_table_queries = [staging_events_copy, staging_songs_copy]
 # STAR SCHEMA TABLES; DATA INSERTED FROM STAGING TABLES
 insert_table_queries = [songplay_table_insert, user_table_insert, song_table_insert, artist_table_insert, time_table_insert]
 
-# LIST OF TABLES
-# all_tables = [staging_events_copy, staging_songs_copy, songplay_table_insert]
-
-# DATA DISCOVERY QUERIES
+# DATA DISCOVERY QUERIES - USED IN 'data_queries.py' file.
 count_query = (
     """
     SELECT s.title, count(sp.song_id) as Song_Count
@@ -229,5 +226,5 @@ table_count = (
       (SELECT COUNT(*) FROM time);
     """)
 
-# DATA QUERIES list
+# DATA QUERIES list: queries exported to list for use similar to lists above.
 data_queries_list = [count_query, table_count]
